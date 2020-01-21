@@ -7,4 +7,12 @@ public class WordCount{
         }
     }
 
+    public void readFileStuff(){
+        Charset charset =  Charset.forName("UTF-8");
+        Path path = Paths.get("file");
+        try(BufferedReader reader = 
+            Files.newBufferedReader(path, charset)) {
+            // use reader to process the file
+        }
+    }
 }
