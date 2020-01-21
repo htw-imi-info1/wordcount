@@ -4,7 +4,9 @@ import java.nio.*;
 import java.nio.charset.*;
 import java.nio.file.*;
 public class WordCount{
-
+    String fileName; 
+    BufferedReader reader;
+    int lineCounter = 0;
     public static void main(String[] args){
 
         if (args.length < 1){
@@ -12,20 +14,41 @@ public class WordCount{
             System.exit(1);
         }
         try{
-            readFileStuff();
+            WordCount instance = new WordCount();
+            instance.readFile(args[0]);
+            instance.printWordCount();
         }
         catch(IOException e){
-        System.out.println(e);
+            System.out.println(e);
         }
 
     }
-    public static void readFileStuff() throws IOException{
-        Charset charset = Charset.forName("UTF-8");
-        Path path = Paths.get("afile1.txt");
 
-        BufferedReader reader = 
-            Files.newBufferedReader(path, charset);
+    public WordCount(){
+        lineCounter = 0;
+    }
+
+    public void readFile(String fileName) throws IOException{
+        Charset charset = Charset.forName("UTF-8");
+        this.fileName = fileName;
+        Path path = Paths.get(fileName);
+
+        //BufferedReader 
+        reader = 
+        Files.newBufferedReader(path, charset);
+
+        String line = reader.readLine();
+        while(line != null){
+            countLine(line);
+            line = reader.readLine();
+        }
         // use reader to process the file
 
+    }
+    public void countLine(String line){
+        lineCounter++;
+    }
+    public void printWordCount(){
+        System.out.println(lineCounter +" words");
     }
 }
