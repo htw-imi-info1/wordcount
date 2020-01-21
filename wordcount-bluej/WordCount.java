@@ -18,6 +18,9 @@ public class WordCount{
             instance.readFile(args[0]);
             instance.printWordCount();
         }
+        catch(NoSuchFileException e){
+            System.out.println("File not found: "+ args[0]);
+        }
         catch(IOException e){
             System.out.println(e);
         }
@@ -34,20 +37,27 @@ public class WordCount{
         Path path = Paths.get(fileName);
 
         //BufferedReader 
-        reader = 
-        Files.newBufferedReader(path, charset);
+        try(BufferedReader reader = 
+            Files.newBufferedReader(path, charset)){
 
-        String line = reader.readLine();
-        while(line != null){
-            countLine(line);
-            line = reader.readLine();
+            String line = reader.readLine();
+            while(line != null){
+                countLine(line);
+                line = reader.readLine();
+            }
+        }
+        catch(IOException e){
+            System.out.println("oops in readFile");
+            throw e;
         }
         // use reader to process the file
 
     }
+
     public void countLine(String line){
         lineCounter++;
     }
+
     public void printWordCount(){
         System.out.println(lineCounter +" words");
     }
